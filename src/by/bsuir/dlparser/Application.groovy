@@ -8,9 +8,10 @@ class Application {
         def frame = new SwingBuilder().frame(
                 title:"DLParser",
                 contentPane: form.mainPanel,
-                defaultCloseOperation: JFrame.EXIT_ON_CLOSE
+                defaultCloseOperation: JFrame.EXIT_ON_CLOSE,
         )
         frame.pack()
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH)
         frame.setVisible(true)
     }
 

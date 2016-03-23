@@ -8,4 +8,10 @@ import javax.swing.*;
 public class ApplicationForm {
     private JPanel panel1;
     private JPanel mainPanel;
+    private JPanel plotPanel;
+    private JPanel dataPanel;
+    private JButton chooseFileButton;
+    private JLabel fileNameLabel;
+    private JComboBox comboBox1;
+    private JButton processButton;
 }
