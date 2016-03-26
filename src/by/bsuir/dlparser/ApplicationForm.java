@@ -14,13 +14,5 @@ public class ApplicationForm {
     private JLabel fileNameLabel;
     private JComboBox protocolSelectBox;
     private JButton processButton;
-    private JPanel plot1Panel;
-    private JPanel plot2Panel;
-    private JPanel plot3Panel;
-    private JPanel plot4Panel;
-    private JPanel plot5Panel;
-    private JPanel plot6Panel;
-    private JPanel plot7Panel;
-    private JPanel plot0Panel;
     private JTable dataTable;
 }

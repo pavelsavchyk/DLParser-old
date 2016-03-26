@@ -4,36 +4,57 @@ import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartPanel
 import org.jfree.chart.plot.PlotOrientation
 import org.jfree.data.category.DefaultCategoryDataset
+import org.jfree.data.general.SeriesException
+import org.jfree.data.time.Second
+import org.jfree.data.time.TimeSeries
+import org.jfree.data.time.TimeSeriesCollection
+import org.jfree.data.xy.XYDataset
 
 import javax.swing.JFrame
 import java.awt.BorderLayout
 
 class Application {
     static initDemoPlots(ApplicationForm form){
-        (0..7).each {i ->
-            def dataSet = new DefaultCategoryDataset()
-            5.times {
-                dataSet.addValue(it, "a", "${it}")
+
+        def createDataset = { Number offset ->
+            final TimeSeries series = new TimeSeries( "Random Data" );
+            Second current = new Second( );
+            int value = 1;
+            for (int i = 0; i < 20; i++)
+            {
+                try
+                {
+                    series.add(current, new Double( value + offset ) );
+                    current = ( Second ) current.next( );
+                    value ^= 1;
+                }
+                catch ( SeriesException e )
+                {
+                    System.err.println("Error adding to series");
+                }
             }
 
-            def barChart = ChartFactory.createBarChart3D("Chart ${i}",
-                    "category axis label ",
-                    "value axis label ",
-                    dataSet,
-                    PlotOrientation.VERTICAL,
-                    false,
-                    false,
-                    false
-            )
+            // return new TimeSeriesCollection(series);
+            return series;
+        }
+
+        def drawTimeDiagram = { ->
+            TimeSeriesCollection allData = new TimeSeriesCollection();
+            (3).times {
+                def data = createDataset(1.1 * it)
+                allData.addSeries(data)
+            }
+            def barChart = ChartFactory.createXYStepChart("Chart", "", "", allData)
 
 
             def chartPanel = new ChartPanel(barChart, false)
 
-            form."plot${i}Panel".setLayout(new BorderLayout())
-            form."plot${i}Panel".add(chartPanel, BorderLayout.PAGE_START);
-
-            form."plot${i}Panel".revalidate()
+            form.plotPanel.setLayout(new BorderLayout())
+            form.plotPanel.add(chartPanel, BorderLayout.PAGE_START);
+            form.plotPanel.revalidate()
         }
+
+        drawTimeDiagram()
     }
 
     static initWindow(){
