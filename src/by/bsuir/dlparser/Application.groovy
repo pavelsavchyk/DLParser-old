@@ -11,7 +11,11 @@ import org.jfree.data.time.TimeSeriesCollection
 import org.jfree.data.xy.XYDataset
 
 import javax.swing.JFrame
+import javax.swing.filechooser.FileFilter
+import javax.swing.JFileChooser
 import java.awt.BorderLayout
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
 
 class Application {
     static initDemoPlots(ApplicationForm form){
@@ -57,6 +61,21 @@ class Application {
         drawTimeDiagram()
     }
 
+    static initFileDialog(ApplicationForm form){
+        form.chooseFileButton.addActionListener(new ActionListener() {
+            @Override
+            void actionPerformed(ActionEvent e) {
+                def openBinaryDialog = new JFileChooser(
+                        dialogTitle: "Choose an excel file",
+                        fileSelectionMode: JFileChooser.FILES_ONLY)
+
+                openBinaryDialog.showOpenDialog()
+                def file = openBinaryDialog.selectedFile
+                form.fileNameLabel.text = file.name
+            }
+        })
+    }
+
     static initWindow(){
         def form = new ApplicationForm()
         def frame = new SwingBuilder().frame(
@@ -71,6 +90,7 @@ class Application {
         frame.setVisible(true)
 
         initDemoPlots(form)
+        initFileDialog(form)
     }
 
     static void main(String[] args){
